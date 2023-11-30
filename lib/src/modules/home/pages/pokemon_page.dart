@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:pokemon_app/src/core/widgets/body_template.dart';
 import 'package:pokemon_app/src/modules/home/controller/pokemon_controller.dart';
 import 'package:pokemon_app/src/modules/home/models/pokemon_model.dart';
@@ -41,7 +42,12 @@ class _PokemonPageState extends State<PokemonPage> {
           } else if (state is PokemonSucess) {
             pokemon = state.pokemons;
 
-            return ListView.builder(
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+              ),
               itemCount: pokemon.length,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -49,12 +55,38 @@ class _PokemonPageState extends State<PokemonPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PokemonDetailsPage(pokemon: pokemon[index])),
+                        builder: (context) =>
+                            PokemonDetailsPage(pokemon: pokemon[index]),
+                      ),
                     );
                   },
-                  child: ListTile(
-                    leading: Text('#${pokemon[index].id}'),
-                    title: Text(pokemon[index].name ?? ""),
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: FadeInImage.memoryNetwork(
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return const SizedBox();
+                            },
+                            placeholder: kTransparentImage,
+                            image: pokemon[index].image!,
+                            imageScale: 0.75,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('#${pokemon[index].id}'),
+                              Text(pokemon[index].name ?? ""),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
