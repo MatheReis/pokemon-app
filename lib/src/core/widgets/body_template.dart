@@ -1,14 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/src/core/constants/app_colors.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class BodyTemplate extends StatelessWidget {
   final bool isDetailPage;
   final Widget body;
+  final String? imgUrl;
 
   const BodyTemplate({
     Key? key,
     required this.isDetailPage,
     required this.body,
+    this.imgUrl,
   }) : super(key: key);
 
   @override
@@ -19,15 +23,21 @@ class BodyTemplate extends StatelessWidget {
         appBar: isDetailPage
             ? _buildAppBarDetails(
                 true,
-                Image.asset(
-                  assetName,
-                  height: 130,
-                  width: 130,
-                ),
+                imgUrl != null
+                    ? FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: imgUrl!,
+                        imageScale: 0.75,
+                      )
+                    : Image.asset(
+                        assetName,
+                        height: 130,
+                        width: 130,
+                      ),
                 AppColors.primary,
               )
             : _buildAppBar(
-                Text("dat"),
+                const Text("dat"),
                 Image.asset(
                   assetName,
                   height: 130,

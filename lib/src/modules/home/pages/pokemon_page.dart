@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_app/src/core/widgets/body_template.dart';
 import 'package:pokemon_app/src/modules/home/controller/pokemon_controller.dart';
 import 'package:pokemon_app/src/modules/home/models/pokemon_model.dart';
+import 'package:pokemon_app/src/modules/home/pages/pokemon_detail.dart';
 import 'package:pokemon_app/src/modules/home/services/pokemon_service.dart';
 import 'package:pokemon_app/src/modules/home/states/pokemon_state.dart';
 
@@ -43,8 +44,18 @@ class _PokemonPageState extends State<PokemonPage> {
             return ListView.builder(
               itemCount: pokemon.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(pokemon[index].name ?? ""),
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PokemonDetailsPage(pokemon: pokemon[index])),
+                    );
+                  },
+                  child: ListTile(
+                    leading: Text('#${pokemon[index].id}'),
+                    title: Text(pokemon[index].name ?? ""),
+                  ),
                 );
               },
             );
