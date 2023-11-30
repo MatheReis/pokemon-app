@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokemon_app/src/core/constants/app_colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -16,7 +17,7 @@ class BodyTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String assetName = "assets/images/pokemon_logo.png";
+    const String assetName = "assets/images/pokemon_logo.svg";
 
     return Scaffold(
         appBar: isDetailPage
@@ -28,11 +29,7 @@ class BodyTemplate extends StatelessWidget {
                         image: imgUrl!,
                         imageScale: 0.75,
                       )
-                    : Image.asset(
-                        assetName,
-                        height: 130,
-                        width: 130,
-                      ),
+                    : SvgPicture.asset(assetName),
                 AppColors.primary,
               )
             : _buildAppBar(
